@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAQi Bluetooth Controller</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+    }
+    button {
+      padding: 20px;
+      font-size: 24px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <h1>RAQi Controller</h1>
+  <button onclick="connectBLE()">🔗 Connect</button>
+  <div class="grid">
+    <div></div>
+    <button onclick="send('F')">⬆️</button>
+    <div></div>
+
+    <button onclick="send('L1')">⬅️</button>
+    <div></div>
+    <button onclick="send('R1')">➡️</button>
+
+    <button onclick="send('L2')">⬅️</button>
+    <button onclick="send('B')">⬇️</button>
+    <button onclick="send('R2')">➡️</button>
+  </div>
+
+  <script>
+    let characteristic;
+
+    async function connectBLE() {
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          filters: [{ name: 'RAQi' }],
+          optionalServices: ['12345678-1234-1234-1234-123456789abc']
+        });
+
+        const server = await device.gatt.connect();
+        const service = await server.getPrimaryService('12345678-1234-1234-1234-123456789abc');
+        characteristic = await service.getCharacteristic('abcdefab-1234-5678-1234-abcdefabcdef');
+
+        alert("✅ Connected to RAQi");
+      } catch (err) {
+        alert("❌ Failed to connect: " + err);
+      }
+    }
+
+    async function send(command) {
+      if (!characteristic) {
+        alert("Please connect first!");
+        return;
+      }
+      const encoder = new TextEncoder();
+      await characteristic.writeValue(encoder.encode(command));
+    }
+  </script>
+</body>
+</html>
