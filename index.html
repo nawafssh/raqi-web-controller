@@ -6,50 +6,62 @@
   <title>RAQi Bluetooth Controller</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Segoe UI", sans-serif;
+      background: #f1f3f8;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      justify-content: flex-start;
+      padding-top: 50px;
       margin: 0;
-      background-color: #f5f5f5;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: auto auto auto;
-      gap: 10px;
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
     }
-    button {
-      padding: 20px;
-      font-size: 24px;
+    .connect-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #007bff;
       border: none;
-      border-radius: 8px;
-      background-color: #4CAF50;
       color: white;
+      border-radius: 8px;
       cursor: pointer;
+      margin-bottom: 40px;
     }
-    button:hover {
-      background-color: #388e3c;
+    .connect-btn:hover {
+      background-color: #0056b3;
+    }
+    .motor-grid {
+      display: grid;
+      grid-template-columns: 100px 100px;
+      grid-template-rows: repeat(2, 100px);
+      gap: 20px 40px;
+    }
+    .motor-grid button {
+      font-size: 32px;
+      padding: 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .motor-grid button:hover {
+      background-color: #1e7e34;
     }
   </style>
 </head>
 <body>
-  <h1>RAQi Controller</h1>
-  <button onclick="connectBLE()">🔗 Connect</button>
-  <div class="grid">
-    <div></div>
-    <button onclick="send('F')">⬆️</button>
-    <div></div>
+  <h1>RAQi BLE Motor Control</h1>
+  <button class="connect-btn" onclick="connectBLE()">🔗 Connect</button>
 
-    <button onclick="send('L1')">⬅️</button>
-    <div></div>
-    <button onclick="send('R1')">➡️</button>
-
-    <button onclick="send('L2')">⬅️</button>
-    <button onclick="send('B')">⬇️</button>
-    <button onclick="send('R2')">➡️</button>
+  <div class="motor-grid">
+    <button onclick="send('L1')">↑</button>
+    <button onclick="send('R1')">↑</button>
+    <button onclick="send('L2')">↓</button>
+    <button onclick="send('R2')">↓</button>
   </div>
 
   <script>
